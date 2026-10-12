@@ -148,6 +148,37 @@ public class Main {
             }
              
           break;
+          case 6: System.out.println("Editar ganho:");
+          for (int i= 0; i<ganhosList.size(); i++) {
+            Ganho ganho = ganhosList.get(i);
+            System.out.println("ID: " + ganho.getId() + ", Valor: " + ganho.getValor() + ", Plataforma: "
+                + ganho.getPlataforma() + ", Data: " + ganho.getData());
+          }
+          System.out.println("Digite o ID do ganho que deseja editar:");
+          int idEditar = scanner.nextInt();
+          scanner.nextLine(); // limpa a sobra do Enter
+          System.out.println("Digite o novo valor:");
+          double novoValor = scanner.nextDouble();
+          scanner.nextLine(); // limpa a sobra do Enter
+          if (ganhosList.stream().anyMatch(ganho -> ganho.getId() == idEditar)) {
+            for (Ganho ganho : ganhosList) {
+              if (ganho.getId() == idEditar) {
+                ganho.setValor(novoValor);
+                System.out.println("Ganho atualizado com sucesso.");
+                // Reescreve o arquivo com os ganhos atualizados
+                try (FileWriter filewriter = new FileWriter("ganhos.txt")) {
+                  for (Ganho g : ganhosList) {
+                    filewriter.write(g.getValor() + ";" + g.getPlataforma() + ";"
+                        + g.getData() + ";" + g.getId() + "\n");
+                  }
+                }
+                break;
+              }
+            }
+          } else {
+            System.out.println("Ganho com ID " + idEditar + " não encontrado.");
+          }
+          break;
         default:
           System.out.println("Opção inválida");
          
