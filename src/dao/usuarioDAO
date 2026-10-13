@@ -1,0 +1,14 @@
+package dao;
+public class UsuarioDAO {
+    public void salvar(Usuario usuario) throws SQLException {
+        String sql = "INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)";
+
+        try (Connection conn = Conexao.conectar();
+             PreparedStatement comando = conn.prepareStatement(sql)) {
+            comando.setString(1, usuario.getNome());
+            comando.setString(2, usuario.getEmail());
+            comando.setString(3, usuario.getSenha());
+            comando.executeUpdate();
+        }   
+    }
+}

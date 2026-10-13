@@ -6,21 +6,21 @@ public class Ganho {
     private int id;
     private  double valor;
     private String plataforma;
-    private  LocalDate data;
+    private  LocalDate Cadastrado_Em;
     public double getValor() {
         return valor;
     }
     public String getPlataforma() {
         return plataforma;
     }
-    public Ganho(int id, double valor, String plataforma, LocalDate data) {
+    public Ganho(int id, double valor, String plataforma, LocalDate Cadastrado_Em) {
         this.id = id;
         this.valor = valor;
         this.plataforma = plataforma;
-        this.data = data;
+        this.Cadastrado_Em = Cadastrado_Em;
     }
-    public LocalDate getData() {
-        return data;
+    public LocalDate getCadastrado_Em() {
+        return Cadastrado_Em;
     }
     public void setValor(double valor) {
         this.valor = valor;
@@ -28,10 +28,10 @@ public class Ganho {
     public void setPlataforma(String plataforma) {
         this.plataforma = plataforma;
     }
-    public void setData(LocalDate data) {
-        this.data = data;
+    public void setCadastrado_Em(LocalDate Cadastrado_Em) {
+        this.Cadastrado_Em = Cadastrado_Em;
     }
-    public int getId() {
+    public int getId() {    
         return id;
     }
 }
