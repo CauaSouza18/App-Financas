@@ -27,7 +27,16 @@ public class GanhoDAO {
         }
         return ganhos;
     }
+public void atualizar(Ganho ganho) throws SQLException {
+    String sql = "UPDATE ganhos set valor = ?, plataforma = ? WHERE id = ?";
+    try(Connection conn= Conexao.conectar(); PreparedStatement comando = conn.prepareStatement(sql)) {
+        comando.setDouble(1, ganho.getValor());
+        comando.setString(2, ganho.getPlataforma());
+        comando.setInt(3, ganho.getId());
+        comando.executeUpdate();
 
+    }
+}
     public void deletar(int id) throws SQLException {
         String sql = "DELETE from ganhos WHERE id = ?";
         try (Connection conn = Conexao.conectar(); PreparedStatement comando = conn.prepareStatement(sql)) {

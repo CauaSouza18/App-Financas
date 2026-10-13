@@ -18,6 +18,7 @@ public class Main {
             System.out.println("2. Adicionar ganho");
             System.out.println("3. Sair");
             System.err.println("4. Deletar ganho");
+            System.out.println("5. Atualizar ganho");
             opcao = scanner.nextInt();
             scanner.nextLine(); // Limpar o buffer
 
@@ -51,18 +52,37 @@ public class Main {
                     System.out.println("saindo");
 
                     break;
-                    case 4: 
+                case 4:
                     try {
                         System.out.println("Informe o ID que deseja deletar:");
                         int id = scanner.nextInt();
                         scanner.nextLine();
                         ganhoDAO.deletar(id);
-                       System.out.println("Ganho deletado");
+                        System.out.println("Ganho deletado");
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
+
+                    break;
+                case 5:
+                        System.out.println("Qual o ID que deseja atualizar?");
+                        int id = scanner.nextInt();
+                        scanner.nextLine();
+                        System.out.println("Qual o valor novo");
+                        double novoValor = scanner.nextDouble();
+                        scanner.nextLine();
+                        System.out.println("Qual a plataforma?");
+                        String novaPlataforma = scanner.nextLine();
+                        Ganho novGanho = new Ganho(id, novoValor, novaPlataforma, null);
+                        try {
+                            ganhoDAO.atualizar(novGanho);
+                            System.out.println("Ganho atualizado");
+
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
                     
-                    
+
                     break;
                 default:
                     System.out.println("Opção inválida.");
