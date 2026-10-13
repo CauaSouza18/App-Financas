@@ -17,9 +17,9 @@ public class Main {
             System.out.println("1. Listar ganhos");
             System.out.println("2. Adicionar ganho");
             System.out.println("3. Sair");
-
+            System.err.println("4. Deletar ganho");
             opcao = scanner.nextInt();
-                        scanner.nextLine(); // Limpar o buffer
+            scanner.nextLine(); // Limpar o buffer
 
             switch (opcao) {
 
@@ -50,6 +50,19 @@ public class Main {
                 case 3:
                     System.out.println("saindo");
 
+                    break;
+                    case 4: 
+                    try {
+                        System.out.println("Informe o ID que deseja deletar:");
+                        int id = scanner.nextInt();
+                        scanner.nextLine();
+                        ganhoDAO.deletar(id);
+                       System.out.println("Ganho deletado");
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    
+                    
                     break;
                 default:
                     System.out.println("Opção inválida.");

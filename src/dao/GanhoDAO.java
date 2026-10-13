@@ -8,13 +8,12 @@ import java.util.ArrayList;
 import model.Ganho;
 
 public class GanhoDAO {
+
     public ArrayList<Ganho> listGanhos() throws SQLException {
         String sql = "SELECT * FROM ganhos";
         ArrayList<Ganho> ganhos = new ArrayList<>();
 
-        try (Connection conn = Conexao.conectar();
-             PreparedStatement comando = conn.prepareStatement(sql);
-             var resultado = comando.executeQuery()) {
+        try (Connection conn = Conexao.conectar(); PreparedStatement comando = conn.prepareStatement(sql); var resultado = comando.executeQuery()) {
 
             while (resultado.next()) {
                 int id = resultado.getInt("id");
@@ -28,15 +27,26 @@ public class GanhoDAO {
         }
         return ganhos;
     }
+
+    public void deletar(int id) throws SQLException {
+        String sql = "DELETE from ganhos WHERE id = ?";
+        try (Connection conn = Conexao.conectar(); PreparedStatement comando = conn.prepareStatement(sql)) {
+            comando.setInt(1, id);
+            comando.executeUpdate();
+
+        }
+
+    }
+
     public void salvar(Ganho ganho) throws SQLException {
         String sql = "INSERT INTO ganhos (valor, plataforma, Cadastrado_Em) VALUES (?, ?, ?)";
 
-        try (Connection conn = Conexao.conectar();
-             PreparedStatement comando = conn.prepareStatement(sql)) {
+        try (Connection conn = Conexao.conectar(); PreparedStatement comando = conn.prepareStatement(sql)) {
             comando.setDouble(1, ganho.getValor());
             comando.setString(2, ganho.getPlataforma());
             comando.setObject(3, ganho.getCadastrado_Em());
             comando.executeUpdate();
         }
     }
+
 }
