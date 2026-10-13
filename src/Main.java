@@ -1,30 +1,60 @@
+
 import dao.GanhoDAO;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Scanner;
 import model.Ganho;
-public class Main {
-    public static void main(String[] args) {
-Ganho ganho = new Ganho(1, 100.0, "Ifood", LocalDate.now());
-        GanhoDAO ganhoDAO = new GanhoDAO();
-        try {
-            ganhoDAO.salvar(ganho);
-            System.out.println("Ganho salvo com sucesso!");
-        } catch (SQLException e) {
-            System.err.println("Erro ao salvar o ganho: " + e.getMessage());
-        }
 
-    Ganho ganho2 = new Ganho(2, 200.0, "99", LocalDate.now());
-        GanhoDAO ganhoDAO2 = new GanhoDAO();
-        try {
-            ganhoDAO2.salvar(ganho2);
-            System.out.println("Ganho salvo com sucesso!" );
-            ArrayList<Ganho> ganhos = ganhoDAO2.listGanhos();
-            for (Ganho g : ganhos) {
-                System.out.println("ID: " + g.getId() + ", Valor: " + g.getValor() + ", Data: " + g.getCadastrado_Em() + ", Plataforma: " + g.getPlataforma());
+public class Main {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        GanhoDAO ganhoDAO = new GanhoDAO();
+        int opcao;
+        do {
+            System.out.println("Escolha uma opção:");
+            System.out.println("1. Listar ganhos");
+            System.out.println("2. Adicionar ganho");
+            System.out.println("3. Sair");
+
+            opcao = scanner.nextInt();
+                        scanner.nextLine(); // Limpar o buffer
+
+            switch (opcao) {
+
+                case 1:
+                    try {
+                        ArrayList<Ganho> ganhos = ganhoDAO.listGanhos();
+                        for (Ganho ganho : ganhos) {
+                            System.out.println("ID: " + ganho.getId() + ", Valor: " + ganho.getValor() + ", Plataforma: " + ganho.getPlataforma() + ", Cadastrado Em: " + ganho.getCadastrado_Em());
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case 2:
+                    System.out.print("Digite o valor do ganho: ");
+                    double valor = scanner.nextDouble();
+                    scanner.nextLine(); // Limpar o buffer
+                    System.out.print("Digite a plataforma do ganho: ");
+                    String plataforma = scanner.nextLine();
+                    Ganho novoGanho = new Ganho(0, valor, plataforma, LocalDate.now());
+                    try {
+                        ganhoDAO.salvar(novoGanho);
+                        System.out.println("Novo ganho salvo com sucesso!");
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case 3:
+                    System.out.println("saindo");
+
+                    break;
+                default:
+                    System.out.println("Opção inválida.");
             }
-        } catch (SQLException e) {
-            System.err.println("Erro ao salvar o ganho: " + e.getMessage());
-        }
-        }
+        } while (opcao != 3);
+
+    }
 }
