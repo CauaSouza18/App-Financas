@@ -19,6 +19,7 @@ public class Main {
             System.out.println("3. Sair");
             System.err.println("4. Deletar ganho");
             System.out.println("5. Atualizar ganho");
+            System.out.println("6. Filtrar por data");
             opcao = scanner.nextInt();
             scanner.nextLine(); // Limpar o buffer
 
@@ -65,29 +66,52 @@ public class Main {
 
                     break;
                 case 5:
-                        System.out.println("Qual o ID que deseja atualizar?");
-                        int id = scanner.nextInt();
-                        scanner.nextLine();
-                        System.out.println("Qual o valor novo");
-                        double novoValor = scanner.nextDouble();
-                        scanner.nextLine();
-                        System.out.println("Qual a plataforma?");
-                        String novaPlataforma = scanner.nextLine();
-                        Ganho novGanho = new Ganho(id, novoValor, novaPlataforma, null);
-                        try {
-                            ganhoDAO.atualizar(novGanho);
-                            System.out.println("Ganho atualizado");
+                    System.out.println("Qual o ID que deseja atualizar?");
+                    int id = scanner.nextInt();
+                    scanner.nextLine();
+                    System.out.println("Qual o valor novo");
+                    double novoValor = scanner.nextDouble();
+                    scanner.nextLine();
+                    System.out.println("Qual a plataforma?");
+                    String novaPlataforma = scanner.nextLine();
+                    Ganho novGanho = new Ganho(id, novoValor, novaPlataforma, null);
+                    try {
+                        ganhoDAO.atualizar(novGanho);
+                        System.out.println("Ganho atualizado");
 
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
-                    
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
 
                     break;
-                default:
+                case 6:
+                    System.out.println("Qual a data de inicio");
+                    LocalDate inicio = LocalDate.parse(scanner.nextLine());
+                    System.out.println("Qual a data do fim?");
+                    LocalDate fim = LocalDate.parse(scanner.nextLine());
+                    try {
+                        ArrayList<Ganho> ganhos
+                                = ganhoDAO.listarPorPeriodo(inicio, fim);
+for (Ganho ganho : ganhos) {
+                        System.out.println("ID: " + ganho.getId()
+                                + ", Valor: " + ganho.getValor()
+                                + ", Plataforma: " + ganho.getPlataforma()
+                                + ", Data: " + ganho.getCadastrado_Em());
+                    }
+                    }
+                    
+                        catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
+                        break;
+
+                    
+            
+            default:
                     System.out.println("Opção inválida.");
             }
         } while (opcao != 3);
 
+        }
     }
-}
