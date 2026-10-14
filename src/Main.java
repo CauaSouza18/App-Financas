@@ -92,26 +92,22 @@ public class Main {
                     try {
                         ArrayList<Ganho> ganhos
                                 = ganhoDAO.listarPorPeriodo(inicio, fim);
-for (Ganho ganho : ganhos) {
-                        System.out.println("ID: " + ganho.getId()
-                                + ", Valor: " + ganho.getValor()
-                                + ", Plataforma: " + ganho.getPlataforma()
-                                + ", Data: " + ganho.getCadastrado_Em());
-                    }
-                    }
-                    
-                        catch (SQLException e) {
+                        for (Ganho ganho : ganhos) {
+                            System.out.println("ID: " + ganho.getId()
+                                    + ", Valor: " + ganho.getValor()
+                                    + ", Plataforma: " + ganho.getPlataforma()
+                                    + ", Data: " + ganho.getCadastrado_Em());
+                        }
+                    } catch (SQLException e) {
                         e.printStackTrace();
                     }
 
-                        break;
+                    break;
 
-                    
-            
-            default:
+                default:
                     System.out.println("Opção inválida.");
             }
         } while (opcao != 3);
 
-        }
     }
+}
