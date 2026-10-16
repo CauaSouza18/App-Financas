@@ -10,7 +10,7 @@ import model.Ganho;
 public class GanhoDAO {
 
     public ArrayList<Ganho> listGanhos() throws SQLException {
-        String sql = "SELECT * FROM ganhos";
+        String sql = "SELECT id, valor, plataforma, Cadastrado_Em AS data FROM ganhos";
         ArrayList<Ganho> ganhos = new ArrayList<>();
 
         try (Connection conn = Conexao.conectar(); PreparedStatement comando = conn.prepareStatement(sql); var resultado = comando.executeQuery()) {
@@ -19,9 +19,9 @@ public class GanhoDAO {
                 int id = resultado.getInt("id");
                 double valor = resultado.getDouble("valor");
                 String plataforma = resultado.getString("plataforma");
-                LocalDate Cadastrado_Em = resultado.getDate("Cadastrado_Em").toLocalDate();
+                LocalDate data = resultado.getDate("data").toLocalDate();
 
-                Ganho ganho = new Ganho(id, valor, plataforma, Cadastrado_Em);
+                Ganho ganho = new Ganho(id, valor, plataforma, data);
                 ganhos.add(ganho);
             }
         }
@@ -29,7 +29,7 @@ public class GanhoDAO {
     }
 
     public ArrayList<Ganho> listarPorPeriodo(LocalDate inicio, LocalDate fim) throws SQLException {
-        String sql = "SELECT id, valor, plataforma, Cadastrado_Em FROM ganhos "
+        String sql = "SELECT id, valor, plataforma, Cadastrado_Em AS data FROM ganhos "
                 + "WHERE Cadastrado_Em BETWEEN ? AND ? ORDER BY Cadastrado_Em, id";
         ArrayList<Ganho> ganhos = new ArrayList<>();
 
@@ -42,7 +42,7 @@ public class GanhoDAO {
                         resultado.getInt("id"),
                         resultado.getDouble("Valor"),
                         resultado.getString("plataforma"),
-                       resultado.getDate("Cadastrado_Em").toLocalDate()
+                       resultado.getDate("data").toLocalDate()
                     )
                 );
             
@@ -55,24 +55,28 @@ public class GanhoDAO {
 
     
 
-    public void atualizar(Ganho ganho) throws SQLException {
+    public boolean atualizar(Ganho ganho) throws SQLException {
         String sql = "UPDATE ganhos set valor = ?, plataforma = ? WHERE id = ?";
+        int linhasAfetadas;
         try (Connection conn = Conexao.conectar(); PreparedStatement comando = conn.prepareStatement(sql)) {
             comando.setDouble(1, ganho.getValor());
             comando.setString(2, ganho.getPlataforma());
             comando.setInt(3, ganho.getId());
-            comando.executeUpdate();
+            linhasAfetadas = comando.executeUpdate();
 
         }
+        return linhasAfetadas > 0;
     }
 
-    public void deletar(int id) throws SQLException {
+    public boolean deletar(int id) throws SQLException {
         String sql = "DELETE from ganhos WHERE id = ?";
+        int linhasAfetadas;
         try (Connection conn = Conexao.conectar(); PreparedStatement comando = conn.prepareStatement(sql)) {
             comando.setInt(1, id);
-            comando.executeUpdate();
+            linhasAfetadas = comando.executeUpdate();
 
         }
+        return linhasAfetadas > 0;
 
     }
 
@@ -82,7 +86,7 @@ public class GanhoDAO {
         try (Connection conn = Conexao.conectar(); PreparedStatement comando = conn.prepareStatement(sql)) {
             comando.setDouble(1, ganho.getValor());
             comando.setString(2, ganho.getPlataforma());
-            comando.setObject(3, ganho.getCadastrado_Em());
+            comando.setObject(3, ganho.getData());
             comando.executeUpdate();
         }
     }

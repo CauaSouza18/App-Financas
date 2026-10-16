@@ -29,7 +29,7 @@ public class Main {
                     try {
                         ArrayList<Ganho> ganhos = ganhoDAO.listGanhos();
                         for (Ganho ganho : ganhos) {
-                            System.out.println("ID: " + ganho.getId() + ", Valor: " + ganho.getValor() + ", Plataforma: " + ganho.getPlataforma() + ", Cadastrado Em: " + ganho.getCadastrado_Em());
+                            System.out.println("ID: " + ganho.getId() + ", Valor: " + ganho.getValor() + ", Plataforma: " + ganho.getPlataforma() + ", Cadastrado Em: " + ganho.getData());
                         }
                     } catch (SQLException e) {
                         e.printStackTrace();
@@ -58,8 +58,13 @@ public class Main {
                         System.out.println("Informe o ID que deseja deletar:");
                         int id = scanner.nextInt();
                         scanner.nextLine();
-                        ganhoDAO.deletar(id);
-                        System.out.println("Ganho deletado");
+                        boolean apagou = ganhoDAO.deletar(id);
+                        if (apagou) {
+                            System.out.println("Ganho apagado");
+                        } else {
+                            System.out.println("ID não encontrado");
+                        }
+
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -75,9 +80,14 @@ public class Main {
                     System.out.println("Qual a plataforma?");
                     String novaPlataforma = scanner.nextLine();
                     Ganho novGanho = new Ganho(id, novoValor, novaPlataforma, null);
+
                     try {
-                        ganhoDAO.atualizar(novGanho);
-                        System.out.println("Ganho atualizado");
+                        boolean atualizou = ganhoDAO.atualizar(novGanho);
+                        if (atualizou) {
+                            System.out.println("Ganho atualizado");
+                        } else {
+                            System.out.println("ID não encontrado");
+                        }
 
                     } catch (SQLException e) {
                         e.printStackTrace();
@@ -96,7 +106,7 @@ public class Main {
                             System.out.println("ID: " + ganho.getId()
                                     + ", Valor: " + ganho.getValor()
                                     + ", Plataforma: " + ganho.getPlataforma()
-                                    + ", Data: " + ganho.getCadastrado_Em());
+                                    + ", Data: " + ganho.getData());
                         }
                     } catch (SQLException e) {
                         e.printStackTrace();
