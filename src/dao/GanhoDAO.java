@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -90,5 +91,20 @@ public class GanhoDAO {
             comando.executeUpdate();
         }
     }
+    public double totalPorPlataforma(String plataforma) throws SQLException {
+        String sql = "SELECT SUM(valor) FROM ganhos WHERE plataforma = ?";
 
+        try (Connection conn = Conexao.conectar();
+             PreparedStatement comando = conn.prepareStatement(sql)) {
+            comando.setString(1, plataforma);
+
+            try (ResultSet resultado = comando.executeQuery()) {
+                if (resultado.next()) {
+                    return resultado.getDouble(1);
+                }
+            }
+        }
+
+        return 0.0;
+    }
 }

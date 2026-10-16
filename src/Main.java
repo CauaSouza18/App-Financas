@@ -20,6 +20,7 @@ public class Main {
             System.err.println("4. Deletar ganho");
             System.out.println("5. Atualizar ganho");
             System.out.println("6. Filtrar por data");
+            System.out.println("7. Total por plataforma");
             opcao = scanner.nextInt();
             scanner.nextLine(); // Limpar o buffer
 
@@ -113,7 +114,19 @@ public class Main {
                     }
 
                     break;
+                    case 7 :
+                        System.out.println("Digite a plataforma");
+                        String plataformaBusca = scanner.nextLine();
+                        try {
+                            double totalPlataforma = ganhoDAO.totalPorPlataforma(plataformaBusca);
+                            System.out.println("Total da " + plataformaBusca + ":" + totalPlataforma);
 
+                        }
+                        catch(SQLException e) {
+                            e.printStackTrace();
+                            
+                        }
+                     break; 
                 default:
                     System.out.println("Opção inválida.");
             }
